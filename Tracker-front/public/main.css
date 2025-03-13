@@ -1,0 +1,28 @@
+.task-card {
+  position: relative;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  border-radius: 8px 0 0 8px;
+}
+
+.task-card[data-status='TODO']::after {
+  background-color: #ccc;
+}
+.task-card[data-status='IN_PROGRESS']::after {
+  background-color: #2196f3;
+}
+.task-card[data-status='COMPLETED']::after {
+  background-color: #4caf50;
+}
