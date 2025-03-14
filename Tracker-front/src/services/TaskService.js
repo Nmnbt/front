@@ -71,3 +71,19 @@ export async function fetchTaskById(taskId){
     return null
   }
 }
+export async function fetchPaginatedTasks(page , size ) {
+  try {
+
+const token = localStorage.getItem('token')
+    const response = await axios.get(`${API_URL}/project`, {
+      params: { page, size },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Error fetching paginated projects:', error)
+    return { content: [], totalPages: 0, totalElements: 0 }
+  }
+}

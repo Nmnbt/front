@@ -1,27 +1,19 @@
 <template>
-  <div>
+  <div class = "project-create">
     <h2>Create New Project</h2>
     <form @submit.prevent="createProject">
-      <div>
         <label for="name">Project Name:</label>
         <input type="text" id="name" v-model="newProject.name" required />
-      </div>
-      <div>
         <label for="detail">Project Detail:</label>
         <input type="text" id="detail" v-model="newProject.detail" required />
-      </div>
-      <div>
         <label for="dueDate">Due Date:</label>
         <input type="date" id="dueDate" v-model="newProject.dueDate" required />
-      </div>
-      <div>
         <label for="teamIds">Teams:</label>
         <select v-model="newProject.teamIds" multiple required>
           <option v-for="team in teams" :key="team.id" :value="team.teamId">
             {{ team.teamName }}
           </option>
         </select>
-      </div>
       <button type="submit">Create Project</button>
     </form>
   </div>
@@ -79,8 +71,79 @@ export default {
     },
   },
 }
-</script>
+</script><style scoped>
+.project-create {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+div {
+  font-family: Arial, sans-serif;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-<style scoped>
-/* Add any custom styling here */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  color: #555;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Full-width button */
+button {
+  grid-column: span 3;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* Ensure each field takes up full width in its cell */
+div > label,
+div > input,
+div > select {
+  display: block;
+}
 </style>

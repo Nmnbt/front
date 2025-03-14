@@ -1,108 +1,168 @@
-<script setup>
-import MaterialInput from "@/components/MaterialInput.vue";
-import MaterialTextArea from "@/components/MaterialTextArea.vue";
-import MaterialButton from "@/components/MaterialButton.vue";
-import MaterialSwitch from "@/components/MaterialSwitch.vue";
-</script>
 <template>
-  <section>
-    <div class="container py-4">
-      <div class="row">
-        <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
-          <h3 class="text-center">Contact us</h3>
-          <form role="form" id="contact-form" method="post" autocomplete="off">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <MaterialInput
-                    class="input-group-dynamic mb-4"
-                    :label="{ text: 'First Name', class: 'form-label' }"
-                    type="text"
-                  />
-                </div>
-                <div class="col-md-6 ps-2">
-                  <MaterialInput
-                    class="input-group-dynamic"
-                    :label="{ text: 'Last Name', class: 'form-label' }"
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div class="mb-4">
-                <MaterialInput
-                  class="input-group-dynamic"
-                  :label="{ text: 'Email Address', class: 'form-label' }"
-                  type="email"
-                />
-              </div>
-              <MaterialTextArea
-                class="input-group-static mb-4"
-                id="message"
-                :rows="4"
-                >Your message</MaterialTextArea
-              >
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <MaterialSwitch
-                  class="mb-4 d-flex align-items-center"
-                  id="flexSwitchCheckDefault"
-                  checked
-                  labelClass="ms-3 mb-0"
-                >
-                  I agree to the
-                  <a href="javascript:;" class="text-dark"
-                    ><u>Terms and Conditions</u></a
-                  >.
-                </MaterialSwitch>
+  <div class="contact-form">
+    <h1>Employee Form</h1>
 
-                <div class="col-md-12">
-                  <MaterialButton
-                    type="submit"
-                    variant="gradient"
-                    color="dark"
-                    fullWidth
-                    >Send Message</MaterialButton
-                  >
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+    <form @submit.prevent="submitForm">
+      <div>
+        <label for="id">ID:</label>
+        <input
+          type="number"
+          id="id"
+          v-model="employee.id"
+          required
+        />
       </div>
-    </div>
-  </section>
+
+      <div>
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          v-model="employee.name"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="teamId">Team ID:</label>
+        <input
+          type="number"
+          id="teamId"
+          v-model="employee.teamId"
+        />
+      </div>
+
+      <div>
+        <label for="role">Role:</label>
+        <input
+          type="text"
+          id="role"
+          v-model="employee.role"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="status">Status:</label>
+        <input
+          type="text"
+          id="status"
+          v-model="employee.status"
+        />
+      </div>
+
+      <div>
+        <button type="submit" :disabled="!employee.id || !employee.name || !employee.role">Submit</button>
+      </div>
+    </form>
+
+    <p v-if="employee.id || employee.name || employee.role">
+      <strong>Preview:</strong> {{ employee.name }} (Role: {{ employee.role }}) - Status: {{ employee.status }}
+    </p>
+  </div>
 </template>
 
-
 <script>
+import { submitEmployee } from '@/services/EmployeeService'
 
 export default {
   data() {
     return {
-      contact: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        message: '',
-        agreeToTerms: false,
+      employee: {
+        id: '',
+        name: '',
+        teamId: '',
+        role: '',
+        status: '',
       },
     };
   },
   methods: {
-    submitForm() {
-      console.log('Contact Form Submitted:', this.contact);
-      this.resetForm();
+    async submitForm() {
+      try {
+        const newEmployee = await submitEmployee(this.employee)
+        if (newEmployee) {
+          console.log('Employee Registered:', newEmployee)
+          this.resetForm()
+        } else {
+          console.error('Failed to register employee.')
+        }
+      } catch (error) {
+        console.error('Error submitting employee form:', error)
+      }
     },
     resetForm() {
-      this.contact = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        message: '',
-        agreeToTerms: false,
+      this.employee = {
+        id: '',
+        name: '',
+        teamId: '',
+        role: '',
+        status: '',
       };
     },
   },
 };
 </script>
+
+<style scoped>
+.contact-form {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+div {
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+</style>

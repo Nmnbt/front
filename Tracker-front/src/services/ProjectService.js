@@ -2,10 +2,11 @@ import axios from 'axios'
 
 const PROJECT_API_URL = 'http://localhost:8080/project'
 const TEAM_API_URL = 'http://localhost:8080/team'
-const token = localStorage.getItem('token')
 
 export async function createProject(projectData) {
   try {
+
+const token = localStorage.getItem('token')
     const response = await axios.post(`${PROJECT_API_URL}`, projectData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -20,7 +21,9 @@ export async function createProject(projectData) {
 
 export async function fetchTeams() {
   try {
-    const response = await axios.get(TEAM_API_URL, {
+
+const token = localStorage.getItem('token')
+    const response = await axios.get(`${TEAM_API_URL}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -32,8 +35,10 @@ export async function fetchTeams() {
   }
 }
 
-export async function fetchPaginatedProjects(page = 0, size = 10) {
+export async function fetchPaginatedProjects(page , size ) {
   try {
+
+const token = localStorage.getItem('token')
     const response = await axios.get(`${PROJECT_API_URL}`, {
       params: { page, size },
       headers: {

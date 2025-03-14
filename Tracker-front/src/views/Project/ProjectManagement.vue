@@ -1,11 +1,8 @@
 <template>
   <div>
-    <h1>Project Management</h1>
 
-    <!-- Project Create Form -->
     <ProjectCreate @project-created="fetchProjects" />
 
-    <!-- Project View List -->
     <ProjectView ref="projectView" />
   </div>
 </template>
